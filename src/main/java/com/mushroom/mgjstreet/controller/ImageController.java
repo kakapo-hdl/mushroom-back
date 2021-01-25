@@ -13,7 +13,7 @@ import java.util.Date;
 public class ImageController {
 
     @PostMapping("/UploadImage")
-    public String UploadImage(@RequestParam(name = "Image") MultipartFile ImageFile, HttpServletRequest httpServletRequest){
+    public String UploadImage(@RequestParam(name = "Image",required = false) MultipartFile ImageFile, HttpServletRequest httpServletRequest){
         String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         String RealPath = httpServletRequest.getServletContext().getRealPath("/");
         long size = ImageFile.getSize();

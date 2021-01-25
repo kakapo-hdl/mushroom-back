@@ -5,7 +5,10 @@ import com.mushroom.mgjstreet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -21,9 +24,13 @@ public class UserController {
     }
 
     @PostMapping("/insert")
-    public void insertUser(@RequestBody SystemUser systemUser){
+    public void insertUser(   SystemUser systemUser, @RequestParam(value = "imageFile",required = false) MultipartFile File, HttpServletRequest request){
         int flagSuccess;
         System.out.println(systemUser);
+        String realPath = request.getSession().getServletContext().getRealPath("/");
+        System.out.println("File = " + File);
+        systemUser.setCreateDate(new Date());
+        systemUser.setUpdateDate(new Date());
         flagSuccess =userService.insertUser(systemUser);
         if(flagSuccess==1) System.out.println("insert success!");
     }
@@ -32,4 +39,6 @@ public class UserController {
     public List<SystemUser> getAllUser(){
         return userService.getAllUsers();
     }
+
+
 }
