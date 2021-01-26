@@ -2,6 +2,7 @@ package com.mushroom.mgjstreet.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -17,7 +18,10 @@ public class SystemUser {
     private boolean sex;
     private String profession;
     private String description;
+
+    @DateTimeFormat
     private Date birthday;
+
     private Date createDate;
     private Date updateDate;
 
