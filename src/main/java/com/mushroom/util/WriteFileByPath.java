@@ -1,5 +1,6 @@
 package com.mushroom.util;
 
+import com.mushroom.mgjstreet.entity.FilePath;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -7,22 +8,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 @Component
 public class WriteFileByPath {
     public String WriteFileByPath(MultipartFile multipartFile,String path) throws IOException {
-        String folderName = "/headImage";
-        String imageName = UUID.randomUUID().toString()+new Date();
+        String imageName = UUID.randomUUID().toString()+ new SimpleDateFormat("yyyyMMddHHmmss").format((new Date()))+".jpg";
+        String savePath =FilePath.BASE_PATH+path+imageName;
         String imageType = multipartFile.getContentType();
-        path = path+folderName+imageName+imageType;
-        System.out.println(path);
+        System.out.println(savePath);
         byte[] bytes = multipartFile.getBytes();
         try {
-            File file = new File(path);
+            File file = new File(savePath);
             if(!file.exists()){
                 File parentFile  = new File(file.getParent());
-                parentFile.mkdir();
+                parentFile.mkdirs();
                 parentFile.createNewFile();
             }
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -31,6 +33,6 @@ public class WriteFileByPath {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return path;
+        return path+imageName;
     }
 }

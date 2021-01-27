@@ -1,5 +1,6 @@
 package com.mushroom.mgjstreet.controller;
 
+import com.mushroom.mgjstreet.entity.FilePath;
 import com.mushroom.mgjstreet.entity.SystemUser;
 import com.mushroom.mgjstreet.service.UserService;
 import com.mushroom.util.WriteFileByPath;
@@ -30,18 +31,19 @@ public class UserController {
     @PostMapping("/insert")
     public void insertUser(   SystemUser systemUser, @RequestParam(value = "imageFile",required = false) MultipartFile file, HttpServletRequest request){
         int flagSuccess;
-        String imageFolder = "headImage";
+        String savePath="";
         System.out.println(systemUser);
-        String realPath = request.getSession().getServletContext().getRealPath("/");
         if(!file.isEmpty()){
             try {
-                String savePath = writeFileByPath.WriteFileByPath(file, realPath);
+                 savePath = writeFileByPath.WriteFileByPath(file,FilePath.HEAD_IMAGE_PATH );
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
         systemUser.setCreateDate(new Date());
         systemUser.setUpdateDate(new Date());
+        systemUser.setHeadImage(savePath);
         flagSuccess =userService.insertUser(systemUser);
         if(flagSuccess==1) System.out.println("insert success!");
     }
