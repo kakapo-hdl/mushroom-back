@@ -1,6 +1,6 @@
 package com.mushroom.mgjstreet.controller;
 
-import com.mushroom.mgjstreet.entity.FilePath;
+import com.mushroom.mgjstreet.entity.CommonValue;
 import com.mushroom.mgjstreet.entity.SystemUser;
 import com.mushroom.mgjstreet.service.UserService;
 import com.mushroom.util.WriteFileByPath;
@@ -11,8 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api")
@@ -28,19 +33,40 @@ public class UserController {
         this.writeFileByPath = writeFileByPath;
     }
 
+    @PostMapping("/login")
+    public HashMap<String, String> LoginCheck( @RequestParam(value = "userName") String userName,  String password) {
+        System.out.println(userName+" "+password);
+        SystemUser systemUser = userService.getSystemUserByUserName(userName);
+        HashMap<String, String> message = new HashMap<>();
+        if(systemUser==null){
+            message.put("message","用户不存在");
+            message.put("status","1");
+        }
+        else {
+            if(systemUser.getPassword().equals(password)){
+                message.put("message", "登录成功啦！");
+                message.put("status", "0");
+
+            }
+            else {
+                message.put("message","密码错误啦！");
+                message.put("status","2");
+            }
+        }
+        return message;
+    }
     @PostMapping("/insert")
-    public void insertUser(   SystemUser systemUser, @RequestParam(value = "imageFile",required = false) MultipartFile file, HttpServletRequest request){
+    public void insertUser(  @RequestPart("systemUser") SystemUser systemUser, @RequestParam(value = "imageFile",required = false) MultipartFile file, HttpServletRequest request){
         int flagSuccess;
         String savePath="";
-        System.out.println(systemUser);
-        if(!file.isEmpty()){
+        System.out.println(request.getRequestURL());
+        if(file!=null){
             try {
-                 savePath = writeFileByPath.WriteFileByPath(file,FilePath.HEAD_IMAGE_PATH );
+                 savePath = writeFileByPath.WriteFileByPath(file,CommonValue.HEAD_IMAGE_PATH );
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
         systemUser.setCreateDate(new Date());
         systemUser.setUpdateDate(new Date());
         systemUser.setHeadImage(savePath);
@@ -51,6 +77,17 @@ public class UserController {
     @GetMapping("/getAllUser")
     public List<SystemUser> getAllUser(){
         return userService.getAllUsers();
+    }
+    @GetMapping("/getSystemUser")
+    public  Map getSystemUserById(int id ){
+        SystemUser user = userService.getSystemUserById(id);
+        if(user.getHeadImage()!="") {
+            user.setHeadImage(CommonValue.SERVER_URL + user.getHeadImage());
+        }
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("user",user);
+        return hashMap;
     }
 
 

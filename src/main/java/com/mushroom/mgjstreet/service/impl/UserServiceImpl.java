@@ -1,5 +1,6 @@
 package com.mushroom.mgjstreet.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mushroom.mgjstreet.entity.SystemUser;
 import com.mushroom.mgjstreet.mapper.UserMapper;
 import com.mushroom.mgjstreet.service.UserService;
@@ -23,6 +24,19 @@ public class UserServiceImpl implements UserService {
         List<SystemUser> systemUsers = userMapper.selectList(null);
         return systemUsers;
     }
+
+    @Override
+    public SystemUser getSystemUserByUserName(String userName) {
+        QueryWrapper<SystemUser> queryCondition = new QueryWrapper<>();
+        queryCondition.eq("user_name",userName);
+        List<SystemUser> systemUsers = userMapper.selectList(queryCondition);
+        if (systemUsers.isEmpty()){
+            return null;
+        }else {
+            return systemUsers.get(0);
+        }
+    }
+
     @Override
     public int insertUser(SystemUser systemUser) {
         return  userMapper.insert(systemUser);
@@ -37,6 +51,11 @@ public class UserServiceImpl implements UserService {
     public int updateUser(SystemUser systemUser) {
         userMapper.updateById(systemUser);
         return 0;
+    }
+
+    @Override
+    public SystemUser getSystemUserById(int id) {
+        return userMapper.selectById(id);
     }
 
 }

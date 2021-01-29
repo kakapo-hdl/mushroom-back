@@ -1,6 +1,6 @@
 package com.mushroom.util;
 
-import com.mushroom.mgjstreet.entity.FilePath;
+import com.mushroom.mgjstreet.entity.CommonValue;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class WriteFileByPath {
     public String WriteFileByPath(MultipartFile multipartFile,String path) throws IOException {
         String imageName = UUID.randomUUID().toString()+ new SimpleDateFormat("yyyyMMddHHmmss").format((new Date()))+".jpg";
-        String savePath =FilePath.BASE_PATH+path+imageName;
+        String savePath =CommonValue.BASE_PATH+path+imageName;
         String imageType = multipartFile.getContentType();
         System.out.println(savePath);
         byte[] bytes = multipartFile.getBytes();

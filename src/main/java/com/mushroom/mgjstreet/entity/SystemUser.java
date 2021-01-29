@@ -15,7 +15,8 @@ public class SystemUser {
     private String phone;
     private String email;
     private String headImage;
-    private boolean sex;
+    private String sex;
+    private String location;
     private String profession;
     private String description;
 
