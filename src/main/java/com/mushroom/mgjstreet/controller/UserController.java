@@ -3,6 +3,7 @@ package com.mushroom.mgjstreet.controller;
 import com.mushroom.mgjstreet.entity.CommonValue;
 import com.mushroom.mgjstreet.entity.SystemUser;
 import com.mushroom.mgjstreet.service.UserService;
+import com.mushroom.mgjstreet.util.JwtUtil;
 import com.mushroom.util.WriteFileByPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -44,7 +45,9 @@ public class UserController {
         }
         else {
             if(systemUser.getPassword().equals(password)){
+                String token = JwtUtil.CreateToken(userName, password);
                 message.put("message", "登录成功啦！");
+                message.put("token",token);
                 message.put("status", "0");
 
             }
@@ -59,7 +62,6 @@ public class UserController {
     public void insertUser(  @RequestPart("systemUser") SystemUser systemUser, @RequestParam(value = "imageFile",required = false) MultipartFile file, HttpServletRequest request){
         int flagSuccess;
         String savePath="";
-        System.out.println(request.getRequestURL());
         if(file!=null){
             try {
                  savePath = writeFileByPath.WriteFileByPath(file,CommonValue.HEAD_IMAGE_PATH );
@@ -71,7 +73,6 @@ public class UserController {
         systemUser.setUpdateDate(new Date());
         systemUser.setHeadImage(savePath);
         flagSuccess =userService.insertUser(systemUser);
-        if(flagSuccess==1) System.out.println("insert success!");
     }
 
     @GetMapping("/getAllUser")

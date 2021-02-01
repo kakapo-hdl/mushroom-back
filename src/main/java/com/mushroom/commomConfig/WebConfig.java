@@ -1,16 +1,14 @@
 package com.mushroom.commomConfig;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.mushroom.util.AuthenticationInterceptor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 
 import javax.sql.DataSource;
 
@@ -33,6 +31,15 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/MouseRoomFile/**").addResourceLocations("file:C:/MouseRoomFile/");
         registry.addResourceHandler("/theme/**").addResourceLocations("classpath:/static/theme/");
     }
+    @Bean
+    public AuthenticationInterceptor authenticationInterceptor() {
+        return new AuthenticationInterceptor();
+    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authenticationInterceptor())
+                .addPathPatterns("/**");
+    }
 
     @Bean(name = "dataSource")
     @Qualifier(value = "dataSource")
@@ -40,6 +47,5 @@ public class WebConfig implements WebMvcConfigurer {
     @ConfigurationProperties(prefix = "druid")
     public DataSource dataSource() {
         return  DataSourceBuilder.create().type(DruidDataSource.class).build();
-
     }
 }
