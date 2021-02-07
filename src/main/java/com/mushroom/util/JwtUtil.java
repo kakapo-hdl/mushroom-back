@@ -1,4 +1,4 @@
-package com.mushroom.mgjstreet.util;
+package com.mushroom.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

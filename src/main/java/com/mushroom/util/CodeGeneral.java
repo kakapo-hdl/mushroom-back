@@ -1,4 +1,4 @@
-package com.mushroom.mgjstreet.controller;
+package com.mushroom.util;
 
 
 import com.baomidou.mybatisplus.annotation.DbType;

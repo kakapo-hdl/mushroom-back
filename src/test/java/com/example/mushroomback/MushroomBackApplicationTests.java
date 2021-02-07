@@ -1,5 +1,6 @@
 package com.example.mushroomback;
 
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.mushroom.mgjstreet.entity.SystemUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,6 @@ class MushroomBackApplicationTests {
 
     @Test
     void contextLoads() {
-
         SystemUser systemUser = new SystemUser();
         systemUser.setUserName("huangdilei");
         systemUser.setPassword("7894561230");
@@ -24,5 +24,11 @@ class MushroomBackApplicationTests {
         for (SystemUser u: systemUsers) {
             System.out.println(u.getUserName()+" "+u.getPassword());
         }
+    }
+
+    @Test
+    public void CodeGeneral(){
+        GlobalConfig globalConfig = new GlobalConfig();
+
     }
 }

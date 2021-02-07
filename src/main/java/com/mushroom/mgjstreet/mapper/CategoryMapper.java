@@ -1,4 +1,9 @@
 package com.mushroom.mgjstreet.mapper;
 
-public interface CategoryMapper {
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mushroom.mgjstreet.entity.Category;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CategoryMapper extends BaseMapper<Category> {
 }

@@ -18,7 +18,7 @@ public class WriteFileByPath {
         String imageName = UUID.randomUUID().toString()+ new SimpleDateFormat("yyyyMMddHHmmss").format((new Date()))+".jpg";
         String savePath =CommonValue.BASE_PATH+path+imageName;
         String imageType = multipartFile.getContentType();
-        System.out.println(savePath);
+//        System.out.println(savePath);
         byte[] bytes = multipartFile.getBytes();
         try {
             File file = new File(savePath);

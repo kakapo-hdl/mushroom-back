@@ -1,4 +1,4 @@
-package com.mushroom.mgjstreet.util;
+package com.mushroom.util;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

@@ -49,8 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUser(SystemUser systemUser) {
-        userMapper.updateById(systemUser);
-        return 0;
+        return   userMapper.updateById(systemUser);
     }
 
     @Override

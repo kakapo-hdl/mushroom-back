@@ -3,7 +3,7 @@ package com.mushroom.mgjstreet.controller;
 import com.mushroom.mgjstreet.entity.CommonValue;
 import com.mushroom.mgjstreet.entity.SystemUser;
 import com.mushroom.mgjstreet.service.UserService;
-import com.mushroom.mgjstreet.util.JwtUtil;
+import com.mushroom.util.JwtUtil;
 import com.mushroom.util.WriteFileByPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,16 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("User")
 public class UserController {
     private final UserService userService;
     private final JdbcTemplate jdbcTemplate;
@@ -59,7 +56,9 @@ public class UserController {
         return message;
     }
     @PostMapping("/insert")
-    public void insertUser(  @RequestPart("systemUser") SystemUser systemUser, @RequestParam(value = "imageFile",required = false) MultipartFile file, HttpServletRequest request){
+    public void insertUser(  @RequestPart("systemUser") SystemUser systemUser,
+                             @RequestParam(value = "imageFile",required = false) MultipartFile file,
+                             HttpServletRequest request) {
         int flagSuccess;
         String savePath="";
         if(file!=null){
