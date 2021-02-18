@@ -25,11 +25,10 @@ public class CategoryServiceImpl implements CategoryService {
         QueryWrapper<Category> qw = new QueryWrapper<>();
         List<Category> categories = categoryMapper.selectList(qw);
         categories.forEach(item->{
-
             if(item.getImageUrl()!=null){
-            if(!item.getImageUrl().equals("")){
-                item.setImageUrl(CommonValue.SERVER_URL+item.getImageUrl());
-            }
+              if(!item.getImageUrl().equals("")){
+                  item.setImageUrl(CommonValue.SERVER_URL+item.getImageUrl());
+              }
             }
         });
         List<Category> categoriesOne = categories.stream().filter((Category c) ->

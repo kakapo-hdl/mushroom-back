@@ -58,25 +58,31 @@ public class CategoryController {
     }
 
     @PostMapping("/UpdateOrCreate")
-    public Result UpdateCategory( Category category ,  @RequestParam(value = "imageFile",required = false) MultipartFile file){
+    public Result UpdateOrCreateCategory( Category category ,  @RequestParam(value = "imageFile",required = false) MultipartFile file){
         String savePath="";
         int actionFlag=0;
         if(file!=null){
             try {
                 savePath = writeFileByPath.WriteFileByPath(file, CommonValue.CATEGORY_IMAGE_PATH );
-                category.setImageUrl(savePath);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        category.setUpdateDate(new Date());
         if(category.getId()==null){
+            if(!savePath.equals("")){
+                category.setImageUrl(savePath);
+            }
             category.setCreateDate(new Date());
             actionFlag = categoryService.insertCategory(category);
         }else{
+            category.setUpdateDate(new Date());
+            if(savePath.equals("")){
+            category.setImageUrl(categoryService.getCategoryById(category.getId()).getImageUrl());
+            }else{
+            category.setImageUrl(savePath);
+            }
             actionFlag  = categoryService.updateCategory(category);
         }
-
         if(actionFlag == 1 ){
             return Result.ok();
         }else {
